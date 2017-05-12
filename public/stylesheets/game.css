@@ -1,0 +1,9 @@
+html.body-game, html.body-game body{
+  background: #e4f1fe;
+}
+
+#gameAreaWrapper {
+  height: 100%;
+  width: 100%;
+  display: none;
+}

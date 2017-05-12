@@ -1,3 +1,6 @@
 test.js
 node_modules/
 .idea/
+public/javascripts/bin
+test.html
+test.js
