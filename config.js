@@ -5,6 +5,7 @@ module.exports = {
   curWidth: 0,
 
   initQuality: 1400,
+  minQualityOfSplit: 4200,
   initForce: 51000,
 
   foodQuality: 710,

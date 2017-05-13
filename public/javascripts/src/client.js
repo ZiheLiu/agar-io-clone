@@ -19,11 +19,12 @@ $('#startButton').on('click', function () {
     initGame();
   });
 
-  socket.on('serverMove', function (curPlayer, seenPlayers, seenFoods) {
+  socket.on('serverMove', function (curPlayer, seenBlocks, seenFoods) {
     config.player.x = curPlayer.x;
     config.player.y = curPlayer.y;
-    config.player.radius = curPlayer.radius;
-    config.player.color = curPlayer.color;
+    // config.player.radius = curPlayer.radius;
+
+    // config.player.color = curPlayer.color;
 
     config.originX = config.player.x - config.curWidth / 2;
     config.originY = config.player.y - config.curHeight / 2;
@@ -35,9 +36,12 @@ $('#startButton').on('click', function () {
       drawFood(seenFoods[i]);
     }
 
-    for(let i = 0; i<seenPlayers.length; i++) {
-      drawPlayer(seenPlayers[i]);
-    }
+
+    // drawPlayer(seenPlayers[i]);
+
+    seenBlocks.forEach(function (block) {
+      drawPlayer(block);
+    });
 
     $('#position').text("x: " + curPlayer.x.toFixed(2) + ", y: " + curPlayer.y.toFixed(2));
   });
@@ -112,7 +116,7 @@ function gameLoopFun() {
   }
   if(Canvas.isKeyPress[4]) {
     Canvas.isKeyPress[4] = false;
-    socket.emit('clientSplit');
+    socket.emit('clientSplit', Canvas.isKeyPress);
   }
 }
 
