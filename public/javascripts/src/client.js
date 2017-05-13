@@ -105,10 +105,14 @@ function drawFood(food) {
 }
 
 function gameLoopFun() {
-  for(let i = 0; i<Canvas.isKeyPress.length; i++) {
+  for(let i = 0; i<4; i++) {
     if(Canvas.isKeyPress[i]) {
       socket.emit('clientMove'+i);
     }
+  }
+  if(Canvas.isKeyPress[4]) {
+    Canvas.isKeyPress[4] = false;
+    socket.emit('clientSplit');
   }
 }
 

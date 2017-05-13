@@ -52,6 +52,11 @@ function buildServer(server) {
       player.x = Math.min(config.maxWidth, player.x + player.velocity);
     });
 
+    socket.on('clientSplit', function () {
+      let player = socket.player;
+      console.log('clientSplit', player.username);
+    });
+
     socket.on('tryPing', function () {
       let player = socket.player;
       player.disSendAndReceive = 0;

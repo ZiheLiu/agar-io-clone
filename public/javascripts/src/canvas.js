@@ -2,7 +2,7 @@ import config from './config'
 
 let canvasContext = null;
 let canvas = null;
-let isKeyPress = [false,false,false,false,false];// up down left right
+let isKeyPress = [false,false,false,false,false];// up down left right space
 
 function Canvas(canvasELe, curWidth, curHeight) {
   canvas = canvasELe;
@@ -31,6 +31,8 @@ function onKeyUp(event) {
     case config.KEY_DOWN: isKeyPress[1] = false;break;
     case config.KEY_LEFT: isKeyPress[2] = false;break;
     case config.KEY_RIGHT: isKeyPress[3] = false;break;
+
+    case config.KEY_SPACE: isKeyPress[4] = true;break;
   }
 }
 
