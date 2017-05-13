@@ -19,7 +19,7 @@ $('#startButton').on('click', function () {
     initGame();
   });
 
-  socket.on('serverMove', function (curPlayer, seenPlayers) {
+  socket.on('serverMove', function (curPlayer, seenPlayers, seenFoods) {
     config.player.x = curPlayer.x;
     config.player.y = curPlayer.y;
     config.player.radius = curPlayer.radius;
@@ -31,13 +31,16 @@ $('#startButton').on('click', function () {
     Canvas.clearCanvas();
     drawGrid();
 
+    for(let i = 0; i<seenFoods.length; i++) {
+      drawFood(seenFoods[i]);
+    }
+
     for(let i = 0; i<seenPlayers.length; i++) {
       drawPlayer(seenPlayers[i]);
     }
 
-    console.log('serverMove :', curPlayer.x, curPlayer.y, seenPlayers);
+    $('#position').text("x: " + curPlayer.x.toFixed(2) + ", y: " + curPlayer.y.toFixed(2));
   });
-
 });
 
 
@@ -87,14 +90,18 @@ function drawGrid() {
 
 }
 
-// function drawPlayer() {
-//   let position = utils.getCanvasXY(config.player.x, config.player.y);
-//   Canvas.drawCircle(position.x, position.y, config.player.radius, config.player.color, config.player.username);
-// }
 
 function drawPlayer(player) {
   let position = utils.getCanvasXY(player.x, player.y);
-  Canvas.drawCircle(position.x, position.y, player.radius, player.color, player.username);
+  let minPos = utils.getCanvasXY(0, 0);
+  let maxPos = utils.getCanvasXY(config.maxWidth, config.maxHeight);
+  // Canvas.drawCircle(position.x, position.y, player.radius, player.color, player.username);
+  Canvas.drawPlayer(position.x, position.y, player.radius, minPos.x, minPos.y, maxPos.x, maxPos, player.color, player.username)
+}
+
+function drawFood(food) {
+  let position = utils.getCanvasXY(food.x, food.y);
+  Canvas.drawCircle(position.x, position.y, food.radius, food.color);
 }
 
 function gameLoopFun() {
@@ -106,7 +113,7 @@ function gameLoopFun() {
 }
 
 window.requestAnimFrame = (function() {
-  return  window.requestAnimationFrame       ||
+  return  window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.mozRequestAnimationFrame    ||
     window.msRequestAnimationFrame     ||
@@ -119,3 +126,9 @@ function gameLoop() {
   window.requestAnimFrame(gameLoop);
   gameLoopFun();
 }
+
+function pingLoop() {
+  socket.emit('ping');
+}
+
+window.setInterval(pingLoop, config.PING_TIME);

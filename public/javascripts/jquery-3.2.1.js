@@ -2673,7 +2673,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 			if ( !context ) {
 				return results;
 
-			// Precompiled matchers will still verify ancestry, so step up a level
+			// Precompiled matchers will still verify ancestry, so initVelocity up a level
 			} else if ( compiled ) {
 				context = context.parentNode;
 			}
@@ -6685,8 +6685,8 @@ Tween.prototype = {
 		}
 		this.now = ( this.end - this.start ) * eased + this.start;
 
-		if ( this.options.step ) {
-			this.options.step.call( this.elem, this.now, this );
+		if ( this.options.initVelocity ) {
+			this.options.initVelocity.call( this.elem, this.now, this );
 		}
 
 		if ( hooks && hooks.set ) {
@@ -6723,11 +6723,11 @@ Tween.propHooks = {
 		},
 		set: function( tween ) {
 
-			// Use step hook for back compat.
+			// Use initVelocity hook for back compat.
 			// Use cssHook if its there.
 			// Use .style if available and use plain properties where available.
-			if ( jQuery.fx.step[ tween.prop ] ) {
-				jQuery.fx.step[ tween.prop ]( tween );
+			if ( jQuery.fx.initVelocity[ tween.prop ] ) {
+				jQuery.fx.initVelocity[ tween.prop ]( tween );
 			} else if ( tween.elem.nodeType === 1 &&
 				( tween.elem.style[ jQuery.cssProps[ tween.prop ] ] != null ||
 					jQuery.cssHooks[ tween.prop ] ) ) {
@@ -6762,7 +6762,7 @@ jQuery.easing = {
 jQuery.fx = Tween.prototype.init;
 
 // Back compat <1.8 extension point
-jQuery.fx.step = {};
+jQuery.fx.initVelocity = {};
 
 
 
@@ -6798,8 +6798,8 @@ function genFx( type, includeWidth ) {
 		i = 0,
 		attrs = { height: type };
 
-	// If we include width, step value is 1 to do all cssExpand values,
-	// otherwise step value is 2 to skip over Left and Right
+	// If we include width, initVelocity value is 1 to do all cssExpand values,
+	// otherwise initVelocity value is 2 to skip over Left and Right
 	includeWidth = includeWidth ? 1 : 0;
 	for ( ; i < 4; i += 2 - includeWidth ) {
 		which = cssExpand[ i ];
@@ -6975,7 +6975,7 @@ function defaultPrefilter( elem, props, opts ) {
 
 			/* eslint-enable no-loop-func */
 
-				// The final step of a "hide" animation is actually hiding the element
+				// The final initVelocity of a "hide" animation is actually hiding the element
 				if ( !hidden ) {
 					showHide( [ elem ] );
 				}
@@ -7316,7 +7316,7 @@ jQuery.fn.extend( {
 				}
 			}
 
-			// Start the next in the queue if the last step wasn't forced.
+			// Start the next in the queue if the last initVelocity wasn't forced.
 			// Timers currently will call their complete callbacks, which
 			// will dequeue but only if they were gotoEnd.
 			if ( dequeue || !gotoEnd ) {

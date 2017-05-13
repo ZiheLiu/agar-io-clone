@@ -17,5 +17,17 @@ module.exports = {
       x: Math.random()*(x2-x) + x,
       y: Math.random()*(y2-y) + y
     }
+  },
+
+  getRadiusByQuality: function (quality) {
+    return Math.sqrt(quality / Math.PI);
+  },
+
+  getVelocityByQuality: function (force, quality) {
+    return Math.sqrt(force/quality);
+  },
+
+  get2PointDistance: function (x, y, x2, y2) {
+    return Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
   }
 };

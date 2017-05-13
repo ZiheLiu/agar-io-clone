@@ -13,6 +13,8 @@ export default {
     radius: 0
   },
 
+  PING_TIME: 5000,
+
   BORDER_COLOR: "black",
   BORDER_WIDTH: 5,
 

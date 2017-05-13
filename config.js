@@ -3,9 +3,14 @@ module.exports = {
   maxWidth: 5000,
   curHeight: 0,
   curWidth: 0,
-  initRadius: 100,
-  foodRadius: 15,
-  step: 5,
-  frameNum: 50,
-  limitFoods: 100
+
+  initQuality: 1400,
+  initForce: 51000,
+
+  foodQuality: 710,
+  limitFoods: 100,
+  eatRotate: 3/4,
+
+  frameNum: 60,
+  kickNum: 360
 };

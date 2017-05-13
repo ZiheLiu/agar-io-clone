@@ -32,11 +32,9 @@ function onKeyUp(event) {
     case config.KEY_LEFT: isKeyPress[2] = false;break;
     case config.KEY_RIGHT: isKeyPress[3] = false;break;
   }
-  console.log('onKeyUp: ', key, "isKeyPress: ", isKeyPress);
 }
 
 function drawCircle(x, y, radius, color, username) {
-  console.log(color);
   if(typeof color === 'string')
     canvasContext.fillStyle = color;
   else{
@@ -56,6 +54,34 @@ function drawCircle(x, y, radius, color, username) {
     canvasContext.textAlign = 'center';
     canvasContext.fillText(username, x, y);
   }
+}
+
+function drawPlayer(centerX, centerY, radius, minX, minY, maxX, maxY, color, username) {
+  canvasContext.strokeStyle = color.border;
+  canvasContext.fillStyle = color.fill;
+  canvasContext.lineWidth = config.BORDER_WIDTH;
+
+  let pointSum = ~~(Math.PI*radius*2/5);
+  let arcStep = 2*Math.PI/pointSum;
+
+  canvasContext.beginPath();
+  let uniformX = uniformNum(maxX, minX);
+  let uniformY = uniformNum(maxY, minY);
+  let x = uniformX(centerX + radius), y = uniformY(centerY);
+  canvasContext.moveTo(x, y);
+  for(let i=1;i<=pointSum;i++) {
+    x = uniformX(centerX + radius*Math.cos(arcStep*i));
+    y = uniformY(centerY + radius*Math.sin(arcStep*i));
+    canvasContext.lineTo(x, y);
+  }
+  canvasContext.fill();
+  canvasContext.stroke();
+
+  canvasContext.font = config.FONT_STYLE;
+  canvasContext.fillStyle = config.FONT_COLOR;
+  canvasContext.textBaseline = 'middle';
+  canvasContext.textAlign = 'center';
+  canvasContext.fillText(username, centerX, centerY);
 }
 
 function drawGrid(startX, endX, startY, endY) {
@@ -87,7 +113,16 @@ function drawLine(startX, startY, endX, endY) {
 function clearCanvas() {
   canvas.width = config.curWidth;
   canvas.height = config.curHeight;
+}
 
+function uniformNum(maxX, minX) {
+  return function (x) {
+    if(x<minX)
+      return minX;
+    else if(x>maxX)
+      return maxX;
+    return x;
+  }
 }
 
 export default {
@@ -96,6 +131,7 @@ export default {
   drawGrid: drawGrid,
   clearCanvas: clearCanvas,
   drawLine: drawLine,
+  drawPlayer: drawPlayer,
 
   isKeyPress: isKeyPress
 }
