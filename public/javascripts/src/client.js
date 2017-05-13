@@ -128,7 +128,7 @@ function gameLoop() {
 }
 
 function pingLoop() {
-  socket.emit('ping');
+  socket.emit('tryPing');
 }
 
 window.setInterval(pingLoop, config.PING_TIME);

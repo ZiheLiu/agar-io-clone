@@ -12,5 +12,5 @@ module.exports = {
   eatRotate: 3/4,
 
   frameNum: 60,
-  kickNum: 360
+  kickNum: 600
 };

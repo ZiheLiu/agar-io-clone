@@ -52,7 +52,7 @@ function buildServer(server) {
       player.x = Math.min(config.maxWidth, player.x + player.velocity);
     });
 
-    socket.on('ping', function () {
+    socket.on('tryPing', function () {
       let player = socket.player;
       player.disSendAndReceive = 0;
     });
@@ -63,7 +63,6 @@ function buildServer(server) {
 }
 
 function gameLoop() {
-
   if(foods.length < config.limitFoods) {
     let pos = utils.getRandomPosition(0, 0, config.maxWidth, config.maxHeight);
     foods.push({
