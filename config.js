@@ -6,10 +6,12 @@ module.exports = {
 
   initQuality: 1400,
   minQualityOfSplit: 4200,
-  initForce: 51000,
+  initForce: 5000,
+  initGarvity: 5000,
+  initBeishu: 30,
 
-  foodQuality: 710,
-  limitFoods: 100,
+  foodQuality: 500,
+  limitFoods: 500,
   eatRotate: 3/4,
 
   frameNum: 60,

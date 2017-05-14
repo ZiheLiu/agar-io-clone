@@ -51,7 +51,7 @@ function buildServer(server) {
     socket.on('clientMove0', function () {
       let player = socket.player;
       player.blocks.forEach(function (block) {
-        block.y = Math.max(0, block.y - block.velocity);
+        block.y = Math.max(0, block.y - block.velocity );
       });
       player.y = Math.max(0, player.y - player.velocity);
       player.disSendAndReceive = 0;
@@ -59,21 +59,21 @@ function buildServer(server) {
     socket.on('clientMove1', function () {
       let player = socket.player;
       player.blocks.forEach(function (block) {
-        block.y = Math.min(config.maxHeight, block.y + block.velocity);
+        block.y = Math.min(config.maxHeight, block.y + block.velocity );
       });
       player.y = Math.min(config.maxHeight, player.y + player.velocity);
     });
     socket.on('clientMove2', function () {
       let player = socket.player;
       player.blocks.forEach(function (block) {
-        block.x = Math.max(0, block.x - block.velocity);
+        block.x = Math.max(0, block.x - block.velocity );
       });
       player.x = Math.max(0, player.x - player.velocity);
     });
     socket.on('clientMove3', function () {
       let player = socket.player;
       player.blocks.forEach(function (block) {
-        block.x = Math.min(config.maxWidth, block.x + block.velocity);
+        block.x = Math.min(config.maxWidth, block.x + block.velocity );
       });
       player.x = Math.min(config.maxWidth, player.x + player.velocity);
       console.log('clientMove3', player);
@@ -86,25 +86,25 @@ function buildServer(server) {
       for(let i=0;i<blockLen;i++) {
         block = player.blocks[i];
         if (block.quality >= config.minQualityOfSplit) {
-          block.x = Math.min(config.maxWidth, block.x + block.radius * 2);
+          // block.x = Math.min(config.maxWidth, block.x + block.radius * 2);
           setPlayerQuality(block, block.quality / 2);
           let curBlock = {
             color: player.color,
             username: player.username,
-            x: Math.min(config.maxWidth, block.x - block.radius * 2),
+            x: Math.min(config.maxWidth, block.x - block.radius * 2.1),
             y: block.y
           };
-          block.x = Math.min(config.maxWidth, block.x + block.radius * 2);
+          // block.x = Math.min(config.maxWidth, block.x + block.radius * 2);
           setPlayerQuality(curBlock, block.quality);
 
           if (isKeyPress[0])
-            curBlock.y = Math.max(0, curBlock.y - curBlock.velocity);
+            curBlock.y = Math.max(0, curBlock.y - curBlock.velocity*config.initBeishu);
           else if (isKeyPress[1])
-            curBlock.y = Math.min(config.maxHeight, curBlock.y + curBlock.velocity);
+            curBlock.y = Math.min(config.maxHeight, curBlock.y + curBlock.velocity*config.initBeishu);
           if (isKeyPress[2])
-            curBlock.x = Math.max(0, curBlock.x - curBlock.velocity);
+            curBlock.x = Math.max(0, curBlock.x - curBlock.velocity*config.initBeishu);
           else if (isKeyPress[3])
-            curBlock.x = Math.min(config.maxWidth, curBlock.x + curBlock.velocity);
+            curBlock.x = Math.min(config.maxWidth, curBlock.x + curBlock.velocity*config.initBeishu);
 
           player.blocks.push(curBlock);
 
@@ -200,6 +200,13 @@ function setPlayerVelocity(player) {
     velocity = Math.min(velocity, block.velocity);
   });
   player.velocity = velocity;
+}
+
+function getBlockGravitVelocity(block, player) {
+  let disSquare = (block.x - player.x) * (block.x - player.x) + (block.y - player.y) * (block.y - player.y);
+  if(disSquare<=0.00001)
+    return 0;
+  return config.initGarvity / disSquare;
 }
 
 module.exports = buildServer;
