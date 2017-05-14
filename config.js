@@ -5,10 +5,12 @@ module.exports = {
   curWidth: 0,
 
   initQuality: 1400,
-  minQualityOfSplit: 4200,
+  minQualityOfSplit: 10000,
+  unionRotate: 3/4,
   initForce: 5000,
   initGarvity: 5000,
   initBeishu: 30,
+
 
   foodQuality: 500,
   limitFoods: 500,

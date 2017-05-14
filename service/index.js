@@ -155,14 +155,27 @@ function gameLoop() {
       for(let i=0, food;food=foods[i];) {
         if(utils.get2PointDistance(food.x, food.y, block.x, block.y) <= block.radius - food.radius*config.eatRotate) {
           foods.splice(i, 1);
-          setPlayerQuality(block, block.quality + food.quality);
-          player.quality += food.quality;
-          setPlayerVelocity(player);
+          addBlockQuality(block, food.quality, player);
         }
         else
           ++ i;
       }
     });
+
+    player.blocks.sort(function (block1, block2) {
+      return block1.quality < block2.quality;
+    });
+
+    for(let i=0, block;block=player.blocks[i];i++) {
+      for(let k=i+1, block2;block2=player.blocks[k];) {
+        if(utils.get2PointDistance(block.x, block.y, block2.x, block2.y)<=block.radius-block2.radius*config.unionRotate) {
+          addBlockQuality(block, block2.quality, player, true);
+          player.blocks.splice(k, 1);
+        }
+        else
+          ++ k;
+      }
+    }
 
     let seenBlocks = player.blocks.slice(0, player.blocks.length);
     players.filter(function (otherPlayer) {
@@ -207,6 +220,13 @@ function getBlockGravitVelocity(block, player) {
   if(disSquare<=0.00001)
     return 0;
   return config.initGarvity / disSquare;
+}
+
+function addBlockQuality(block, quality, player, isUnion) {
+  setPlayerQuality(block, block.quality + quality);
+  if(!isUnion)
+    player.quality += quality;
+  setPlayerVelocity(player);
 }
 
 module.exports = buildServer;
