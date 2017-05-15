@@ -2,6 +2,10 @@ html.body-game, html.body-game body{
   background: #e4f1fe;
 }
 
+html.body-game.dead, html.body-game.dead body{
+  background-color: #6C7A89;
+}
+
 #gameAreaWrapper {
   height: 100%;
   width: 100%;
@@ -10,7 +14,7 @@ html.body-game, html.body-game body{
 
 .panel{
   background: white;
-  padding: 5px;
+  padding: 10px;
 }
 .game-msg{
   position: absolute;
@@ -19,3 +23,19 @@ html.body-game, html.body-game body{
   width: 50px;
   height: 50px;
 }
+
+.game-dead{
+  position: absolute;
+  right: 38%;
+  top: 40%
+}
+.game-dead h2{
+  font-size: 40px;
+}
+.game-dead{
+  display: none;
+}
+html.body-game.dead .game-dead{
+  display: block;
+}
+

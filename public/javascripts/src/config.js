@@ -12,6 +12,7 @@ export default {
   player: {
     radius: 0
   },
+  animLoopHandle: null,
 
   PING_TIME: 5000,
 

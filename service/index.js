@@ -76,7 +76,6 @@ function buildServer(server) {
         block.x = Math.min(config.maxWidth, block.x + block.velocity );
       });
       player.x = Math.min(config.maxWidth, player.x + player.velocity);
-      console.log('clientMove3', player);
     });
 
     socket.on('clientSplit', function (isKeyPress) {
@@ -112,7 +111,6 @@ function buildServer(server) {
           // player.velocity = Math.min(player.velocity, block.velocity);
         }
       }
-      console.log('clientSplit', player.username, isKeyPress);
     });
 
     socket.on('tryPing', function () {
@@ -126,6 +124,7 @@ function buildServer(server) {
 }
 
 function gameLoop() {
+  //如果食物数量没有达到上线，增加食物
   if(foods.length < config.limitFoods) {
     let pos = utils.getRandomPosition(0, 0, config.maxWidth, config.maxHeight);
     foods.push({
@@ -137,11 +136,9 @@ function gameLoop() {
     });
   }
 
-  players.sort(function (player1, player2) {
-    return player1.quality > player2.quality || player1.username < player2.username;
-  });
 
   for(let j=0, player;player=players[j];){
+    //kick current user
     if(player.disSendAndReceive >= config.kickNum) {
       console.log('kick: ', player);
       playerToSockets[player.socketId].disconnect();
@@ -151,6 +148,7 @@ function gameLoop() {
     ++ j;
     ++ player.disSendAndReceive;
 
+    //eat food
     player.blocks.forEach(function (block) {
       for(let i=0, food;food=foods[i];) {
         if(utils.get2PointDistance(food.x, food.y, block.x, block.y) <= block.radius - food.radius*config.eatRotate) {
@@ -162,10 +160,39 @@ function gameLoop() {
       }
     });
 
+    //eat other player
+    player.blocks.forEach(function (block) {
+      for(let i=0, otherPlayer;otherPlayer=players[i];i++) {
+        if(otherPlayer.socketId === player.socketId) {
+          ++i;
+          continue;
+        }
+
+        for(let k=0, otherBlock;otherBlock=otherPlayer.blocks[k];) {
+          if(otherBlock.quality*config.eatPlayerRotate<=block.quality &&
+          utils.get2PointDistance(otherBlock.x, otherBlock.y, block.x, block.y)<=block.radius - otherBlock.radius*config.eatPlayerRadiusRotate) {
+            addBlockQuality(block, otherBlock.quality, player);
+            otherPlayer.quality -= otherBlock.quality;
+            otherPlayer.blocks.splice(k, 1);
+          }
+          else
+            ++ k;
+        }
+        if(otherPlayer.blocks.length===0) {
+          console.log('dead: ', otherPlayer);
+          playerToSockets[otherPlayer.socketId].emit('serverDead');
+        }
+        else{
+          setPlayerVelocity(otherPlayer);
+        }
+      }
+    });
+
+
+    //union blocks
     player.blocks.sort(function (block1, block2) {
       return block1.quality < block2.quality;
     });
-
     for(let i=0, block;block=player.blocks[i];i++) {
       for(let k=i+1, block2;block2=player.blocks[k];) {
         if(utils.get2PointDistance(block.x, block.y, block2.x, block2.y)<=block.radius-block2.radius*config.unionRotate) {
@@ -177,8 +204,9 @@ function gameLoop() {
       }
     }
 
-    let seenBlocks = player.blocks.slice(0, player.blocks.length);
-    players.filter(function (otherPlayer) {
+    //calculate seen blocks
+    let seenBlocks = [];
+    players.forEach(function (otherPlayer) {
       otherPlayer.blocks.forEach(function (block) {
         if(block.x + block.radius >= player.x - config.curWidth/2 &&
           block.x - block.radius <= player.x + config.curWidth/2 &&
@@ -188,7 +216,11 @@ function gameLoop() {
           seenBlocks.push(block);
       })
     });
+    seenBlocks.sort(function (block1, block2) {
+      return block1.quality > block2.quality;
+    });
 
+    //calculate seen foods
     let seenFoods = foods.filter(function (food) {
       return (food.x + food.radius >= player.x - config.curWidth/2 &&
         food.x - food.radius <= player.x + config.curWidth/2) &&
@@ -204,7 +236,6 @@ function setPlayerQuality(player, quality) {
   player.quality = quality;
   player.velocity = utils.getVelocityByQuality(config.initForce, quality);
   player.radius = utils.getRadiusByQuality(quality);
-  console.log(player.velocity);
 }
 
 function setPlayerVelocity(player) {
@@ -228,5 +259,6 @@ function addBlockQuality(block, quality, player, isUnion) {
     player.quality += quality;
   setPlayerVelocity(player);
 }
+
 
 module.exports = buildServer;

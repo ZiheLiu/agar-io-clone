@@ -22,9 +22,6 @@ $('#startButton').on('click', function () {
   socket.on('serverMove', function (curPlayer, seenBlocks, seenFoods) {
     config.player.x = curPlayer.x;
     config.player.y = curPlayer.y;
-    // config.player.radius = curPlayer.radius;
-
-    // config.player.color = curPlayer.color;
 
     config.originX = config.player.x - config.curWidth / 2;
     config.originY = config.player.y - config.curHeight / 2;
@@ -36,14 +33,19 @@ $('#startButton').on('click', function () {
       drawFood(seenFoods[i]);
     }
 
-
-    // drawPlayer(seenPlayers[i]);
-
     seenBlocks.forEach(function (block) {
       drawPlayer(block);
     });
 
     $('#position').text("x: " + curPlayer.x.toFixed(2) + ", y: " + curPlayer.y.toFixed(2));
+  });
+
+  socket.on('serverDead', function () {
+    console.log('serverDead');
+    Canvas.clearCanvas();
+    $('html').addClass('dead');
+    window.cancelAnimFrame(config.animLoopHandle);
+    config.animLoopHandle = null;
   });
 });
 
@@ -130,8 +132,13 @@ window.requestAnimFrame = (function() {
     };
 })();
 
+window.cancelAnimFrame = (function(handle) {
+  return  window.cancelAnimationFrame     ||
+    window.mozCancelAnimationFrame;
+})();
+
 function gameLoop() {
-  window.requestAnimFrame(gameLoop);
+  config.animLoopHandle = window.requestAnimFrame(gameLoop);
   gameLoopFun();
 }
 

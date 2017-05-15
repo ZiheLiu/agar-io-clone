@@ -7,9 +7,12 @@ module.exports = {
   initQuality: 1400,
   minQualityOfSplit: 10000,
   unionRotate: 3/4,
-  initForce: 5000,
+  initForce: 200,
   initGarvity: 5000,
   initBeishu: 30,
+
+  eatPlayerRotate: 1.25,
+  eatPlayerRadiusRotate: 3/4,
 
 
   foodQuality: 500,

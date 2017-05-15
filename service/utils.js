@@ -25,7 +25,7 @@ module.exports = {
 
   getVelocityByQuality: function (force, quality) {
     // return Math.sqrt(force/quality);
-    return force/quality;
+    return force/ Math.sqrt(quality);
   },
 
   get2PointDistance: function (x, y, x2, y2) {
