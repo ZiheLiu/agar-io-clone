@@ -205,6 +205,10 @@ function gameLoop() {
           ++ k;
       }
     }
+    if(player.blocks.length===1) {
+      player.x = player.blocks[0].x;
+      player.y = player.blocks[0].y;
+    }
 
     //calculate seen blocks
     let seenBlocks = [];
