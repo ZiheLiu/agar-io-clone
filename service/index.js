@@ -162,9 +162,9 @@ function gameLoop() {
 
     //eat other player
     player.blocks.forEach(function (block) {
-      for(let i=0, otherPlayer;otherPlayer=players[i];i++) {
+      for(let i=0, otherPlayer;otherPlayer=players[i];) {
         if(otherPlayer.socketId === player.socketId) {
-          ++i;
+           ++i;
           continue;
         }
 
@@ -180,10 +180,12 @@ function gameLoop() {
         }
         if(otherPlayer.blocks.length===0) {
           console.log('dead: ', otherPlayer);
+          players.splice(i, 1);
           playerToSockets[otherPlayer.socketId].emit('serverDead');
         }
         else{
           setPlayerVelocity(otherPlayer);
+          i++;
         }
       }
     });
