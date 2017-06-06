@@ -14,6 +14,8 @@ module.exports = {
   splitFrame: 10,
   splitDis: 10,
 
+  sortLimit: 10,
+
   eatPlayerRotate: 1.25,
   eatPlayerRadiusRotate: 3/4,
 

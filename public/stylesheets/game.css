@@ -13,15 +13,37 @@ html.body-game.dead, html.body-game.dead body{
 }
 
 .panel{
-  background: white;
   padding: 10px;
 }
+.panel-white {
+  background: white;
+}
+
+.game-sort, .game-msg {
+  color: #95A5A6;
+}
+
 .game-msg{
   position: absolute;
   right: 0;
   top: 0;
   width: 50px;
   height: 50px;
+}
+
+.game-sort {
+  border-right: 1px solid #95A5A6;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
+}
+.game-sort ul {
+  padding: 0;
+  margin: 0;
+}
+.game-sort ul li {
+  list-style: none;
 }
 
 .game-dead{

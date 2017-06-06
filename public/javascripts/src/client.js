@@ -19,7 +19,8 @@ $('#startButton').on('click', function () {
     initGame();
   });
 
-  socket.on('serverMove', function (curPlayer, seenBlocks, seenFoods) {
+  socket.on('serverMove', function (curPlayer, seenBlocks, seenFoods, sortPlayers) {
+    updatePlayerSortPanel(sortPlayers)
     config.player.x = curPlayer.x;
     config.player.y = curPlayer.y;
 
@@ -37,7 +38,7 @@ $('#startButton').on('click', function () {
       drawPlayer(block);
     });
 
-    $('#position').text("x: " + curPlayer.x.toFixed(2) + ", y: " + curPlayer.y.toFixed(2));
+    $('#position').text(curPlayer.x.toFixed(2) + ", " + curPlayer.y.toFixed(2));
   });
 
   socket.on('serverDead', function () {
@@ -49,6 +50,13 @@ $('#startButton').on('click', function () {
   });
 });
 
+function updatePlayerSortPanel(sortPlayers) {
+  let gameSortUl = $('#game-sort-ul')
+  gameSortUl.children().remove()
+  sortPlayers.forEach((username) => {
+    gameSortUl.append($('<li></li>').text(username))
+  })
+}
 
 function initGame() {
   config.curHeight = document.body.offsetHeight;

@@ -130,6 +130,14 @@ function gameLoop() {
     });
   }
 
+  players.sort((player, player2) => {
+    return player.quality < player2.quality
+  })
+  let sortPlayers = []
+  for (let i = 0; i < players.length && i < config.sortLimit; i++) {
+    sortPlayers.push(players[i].username)
+  }
+
 
   for(let j=0, player;player=players[j];){
     //kick current user
@@ -246,7 +254,7 @@ function gameLoop() {
         food.y - food.radius <= player.y + config.curHeight/2);
     });
 
-    playerToSockets[player.socketId].emit('serverMove', player, seenBlocks, seenFoods);
+    playerToSockets[player.socketId].emit('serverMove', player, seenBlocks, seenFoods, sortPlayers);
   }
 }
 
