@@ -126,6 +126,18 @@ function uniformNum(maxX, minX) {
     return x;
   }
 }
+/*
+var fun = uniformNum(1,10)
+fun = function (x){if(x<1) return 1; else if(x>10) return 10;}
+fun(1)
+fun(2)
+
+function fun(x){
+}
+var fun = function(x){
+}
+fun(1)
+ */
 
 export default {
   Canvas: Canvas,

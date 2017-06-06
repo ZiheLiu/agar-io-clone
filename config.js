@@ -11,6 +11,9 @@ module.exports = {
   initGarvity: 5000,
   initBeishu: 30,
 
+  splitFrame: 10,
+  splitDis: 10,
+
   eatPlayerRotate: 1.25,
   eatPlayerRadiusRotate: 3/4,
 

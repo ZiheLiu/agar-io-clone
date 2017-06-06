@@ -85,30 +85,34 @@ function buildServer(server) {
       for(let i=0;i<blockLen;i++) {
         block = player.blocks[i];
         if (block.quality >= config.minQualityOfSplit) {
-          // block.x = Math.min(config.maxWidth, block.x + block.radius * 2);
           setPlayerQuality(block, block.quality / 2);
           let curBlock = {
             color: player.color,
             username: player.username,
-            x: Math.min(config.maxWidth, block.x - block.radius * 2.1),
+            x: block.x,
             y: block.y
           };
-          // block.x = Math.min(config.maxWidth, block.x + block.radius * 2);
           setPlayerQuality(curBlock, block.quality);
 
-          if (isKeyPress[0])
-            curBlock.y = Math.max(0, curBlock.y - curBlock.velocity*config.initBeishu);
-          else if (isKeyPress[1])
-            curBlock.y = Math.min(config.maxHeight, curBlock.y + curBlock.velocity*config.initBeishu);
-          if (isKeyPress[2])
-            curBlock.x = Math.max(0, curBlock.x - curBlock.velocity*config.initBeishu);
-          else if (isKeyPress[3])
-            curBlock.x = Math.min(config.maxWidth, curBlock.x + curBlock.velocity*config.initBeishu);
+          curBlock.isSpliting = true
+          curBlock.splitData = {
+            isKeyPress: isKeyPress,
+            leftFrame: config.splitFrame
+          }
+
+          // x: Math.min(config.maxWidth, block.x - block.radius * 2.1),
+          // if (isKeyPress[0])
+          //   curBlock.y = Math.max(0, curBlock.y - curBlock.velocity*config.initBeishu);
+          // if (isKeyPress[2])
+          //   curBlock.y = Math.min(config.maxHeight, curBlock.y + curBlock.velocity*config.initBeishu);
+          // if (isKeyPress[1])
+          //   curBlock.x = Math.max(0, curBlock.x - curBlock.velocity*config.initBeishu);
+          // if (isKeyPress[3])
+          //   curBlock.x = Math.min(config.maxWidth, curBlock.x + curBlock.velocity*config.initBeishu);
 
           player.blocks.push(curBlock);
 
           setPlayerVelocity(player);
-          // player.velocity = Math.min(player.velocity, block.velocity);
         }
       }
     });
@@ -147,6 +151,23 @@ function gameLoop() {
     }
     ++ j;
     ++ player.disSendAndReceive;
+
+    player.blocks.forEach((block) => {
+      if (block.isSpliting) {
+        if (block.splitData.isKeyPress[0])
+          block.y = Math.max(0, block.y - config.splitDis);
+        if (block.splitData.isKeyPress[2])
+          block.y = Math.min(config.maxHeight, block.y + config.splitDis);
+        if (block.splitData.isKeyPress[1])
+          block.x = Math.max(0, block.x - config.splitDis);
+        if (block.splitData.isKeyPress[3])
+          block.x = Math.min(config.maxWidth, block.x + config.splitDis);
+        block.splitData.leftFrame --
+        if (block.splitData.leftFrame === 0) {
+          block.isSpliting = false
+        }
+      }
+    })
 
     //eat food
     player.blocks.forEach(function (block) {
