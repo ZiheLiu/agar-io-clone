@@ -100,16 +100,6 @@ function buildServer(server) {
             leftFrame: config.splitFrame
           }
 
-          // x: Math.min(config.maxWidth, block.x - block.radius * 2.1),
-          // if (isKeyPress[0])
-          //   curBlock.y = Math.max(0, curBlock.y - curBlock.velocity*config.initBeishu);
-          // if (isKeyPress[2])
-          //   curBlock.y = Math.min(config.maxHeight, curBlock.y + curBlock.velocity*config.initBeishu);
-          // if (isKeyPress[1])
-          //   curBlock.x = Math.max(0, curBlock.x - curBlock.velocity*config.initBeishu);
-          // if (isKeyPress[3])
-          //   curBlock.x = Math.min(config.maxWidth, curBlock.x + curBlock.velocity*config.initBeishu);
-
           player.blocks.push(curBlock);
 
           setPlayerVelocity(player);
@@ -218,7 +208,8 @@ function gameLoop() {
     });
     for(let i=0, block;block=player.blocks[i];i++) {
       for(let k=i+1, block2;block2=player.blocks[k];) {
-        if(utils.get2PointDistance(block.x, block.y, block2.x, block2.y)<=block.radius-block2.radius*config.unionRotate) {
+        if(!block.isSpliting && !block2.isSpliting &&
+          utils.get2PointDistance(block.x, block.y, block2.x, block2.y)<=block.radius-block2.radius*config.unionRotate) {
           addBlockQuality(block, block2.quality, player, true);
           player.blocks.splice(k, 1);
         }
