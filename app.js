@@ -6,8 +6,6 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 
-const index = require('./routes/index');
-
 const templating = require('./middleware/templating');
 const authority = require('./middleware/authority');
 
@@ -44,6 +42,7 @@ app.use(async (ctx, next) => {
 // app.use(authority.authority());
 
 // routes
+const index = require('./routes/index');
 app.use(index.routes(), index.allowedMethods());
 
 

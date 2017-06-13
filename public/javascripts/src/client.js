@@ -10,7 +10,7 @@ $('#startButton').on('click', function () {
 
   socket = io();
   socket.on('connect', function () {
-    $('#startMenu').hide();
+    $('#startMenuWrapper').hide();
     $('#gameAreaWrapper').show();
     $('html').addClass('body-game');
     console.log('serverWelcome: [socket.id]' + socket.id);
@@ -44,7 +44,8 @@ $('#startButton').on('click', function () {
   socket.on('serverDead', function () {
     console.log('serverDead');
     Canvas.clearCanvas();
-    $('html').addClass('dead');
+    $('.game-dead').css('display', 'flex')
+    // $('html').addClass('dead');
     window.cancelAnimFrame(config.animLoopHandle);
     config.animLoopHandle = null;
   });
@@ -54,7 +55,9 @@ function updatePlayerSortPanel(sortPlayers) {
   let gameSortUl = $('#game-sort-ul')
   gameSortUl.children().remove()
   sortPlayers.forEach((username) => {
-    gameSortUl.append($('<li></li>').text(username))
+    gameSortUl.append($('<li></li>')
+      .append($('<img src="../../images/user2.svg" alt="user" class="icon-sm">'))
+      .append($('<span></span>').text(username)))
   })
 }
 
@@ -66,6 +69,13 @@ function initGame() {
   socket.emit('clientWindowResize', config.curWidth, config.curHeight);
 
   gameLoop();
+}
+
+window.onresize = function () {
+  config.curHeight = document.body.offsetHeight
+  config.curWidth = document.body.offsetWidth
+  Canvas.setWidthHeight(config.curWidth, config.curHeight)
+  socket.emit('clientWindowResize', config.curWidth, config.curHeight)
 }
 
 function drawGrid() {

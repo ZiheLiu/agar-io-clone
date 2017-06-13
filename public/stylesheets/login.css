@@ -15,126 +15,58 @@ html, body{
   padding: 0;
 }
 
-#startMenu {
-  position: relative;
-  margin: 100px auto auto;
-  width: 350px;
-  padding: 20px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  background-color: white;
-  box-sizing: border-box;
+/* startMenuWrapper */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#startMenuWrapper {
+  background: white;
+  padding: 5% 15px;
+  border-radius: 10px;
 }
 
-#startMenu p {
-  padding: 0;
-  text-align: center;
-  font-size: x-large;
-  font-weight: bold;
+#startMenuWrapper #startMenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
 }
 
-#playerNameInput {
-  width: 100%;
-  text-align: center;
-  padding: 10px;
-  border: solid 1px #dcdcdc;
-  transition: box-shadow 0.3s, border 0.3s;
-  box-sizing: border-box;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  margin-bottom: 10px;
-  outline: none;
+#startMenuWrapper #startMenu h2, #startMenuWrapper #startMenu input, #startMenuWrapper #startMenu button {
+  margin: 10px 0;
 }
 
-#playerNameInput:focus, #playerNameInput.focus {
-  border: solid 1px #CCCCCC;
-  box-shadow: 0 0 3px 1px #DDDDDD;
-}
-
-#startButton, #spectateButton {
-  position: relative;
-  width: 100%;
-  height: 40px;
-  box-sizing: border-box;
+#startMenuWrapper #startMenu h2 {
   font-size: large;
-  color: white;
+}
+#startMenuWrapper #startMenu input {
+  border: 1px solid #BFBFBF;
   text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-  background: #2ecc71;
-  border: 0;
-  border-bottom: 2px solid #28be68;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0 -2px #28be68;
-  box-shadow: inset 0 -2px #28be68;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  margin: 10px auto;
+  padding: 10px 0;
+}
+#startMenuWrapper #startMenu input:focus {
+  outline: .1em solid #26C281;
 }
 
-#spectateButton:active, #spectateButton:hover,
-#startButton:active, #startButton:hover {
-  top: 1px;
-  background: #55D88B;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-
-#settingsButton {
-  position: relative;
+#startMenuWrapper #startMenu input, #startMenuWrapper #startMenu button {
   width: 100%;
-  height: 40px;
-  box-sizing: border-box;
-  font-size: large;
-  color: white;
-  text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-  background: #2ecc71;
-  border: 0;
-  border-bottom: 2px solid #28be68;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0 -2px #28be68;
-  box-shadow: inset 0 -2px #28be68;
   border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  margin: 10px auto;
 }
 
-#settingsButton:active, #settingsButton:hover {
-  top: 1px;
-  background: #55D88B;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+#startMenuWrapper #startMenu button {
+  border: none;
+  background: #26A65B;
+  cursor: pointer;
+  color: white;
+  padding: 10px 0;
 }
-
-#settings, #startMenuWrapper {
-  -webkit-transition: max-height 1s;
-  -moz-transition: max-height 1s;
-  -ms-transition: max-height 1s;
-  -o-transition: max-height 1s;
-  transition: max-height 1s;
-  overflow: hidden;
+#startMenuWrapper #startMenu button:hover {
+ opacity: .7;
 }
-
-#settings {
-  max-height: 0;
-}
-
-#startMenu h3 {
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-#startMenu ul {
-  margin: 10px;
-  padding: 10px;
-  margin-top: 0;
-}
+/* #startMenuWrapper */
 
 #startMenu .input-error {
   color: red;
@@ -145,7 +77,6 @@ html, body{
 #startMenuWrapper {
   z-index: 2;
 }
-
 
 *:focus {
   outline: 1px solid transparent;

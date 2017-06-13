@@ -13,37 +13,22 @@
 <div id="gameAreaWrapper">
   <div class="panel game-msg" id="game-msg"><p id="position"></p></div>
   <div class="panel game-sort">
+    <img class="icon" src=images/ranking.svg alt="ranking">
     <ul id="game-sort-ul">
     </ul>
   </div>
   <canvas id="gameCanvas"></canvas>
-  <div class="panel panel-white game-dead">
-    <h2>YOU ARE DEAD!</h2>
+  <div class="panel game-dead">
+    <img src=images/dead.svg alt="dead-icon" class="icon-lg">
+    <p>YOU ARE DEAD!</p>
   </div>
 </div>
 
 <div id="startMenuWrapper">
   <div id="startMenu">
-    <p>Open Agar</p>
+    <h2>Agar Clone</h2>
     <input type="text" tabindex="0" autofocus placeholder="Enter your name here" id="playerNameInput" maxlength="25" />
-
-    <br />
-    <a><button id="startButton">Play</button></a>
-    <button id="spectateButton">Spectate</button>
-    <button id="settingsButton">Settings</button>
-    <br />
-    <div id="settings">
-      <h3>Settings</h3>
-      <ul>
-        <label><input id="visBord" type="checkbox">Show border</label>
-        <label><input id="showMass" type="checkbox">Show mass</label>
-        <br />
-        <label><input id="continuity" type="checkbox">Continue moving when mouse is off-screen</label>
-        <br />
-        <label><input id="roundFood" type="checkbox" checked>Rounded food</label>
-        <label><input id="darkMode" type="checkbox">Toggle Dark Mode</label>
-      </ul>
-    </div>
+    <button id="startButton">Play</button>
   </div>
 </div>
 

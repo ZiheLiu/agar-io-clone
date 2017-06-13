@@ -12,7 +12,7 @@ module.exports = {
   initBeishu: 30,
 
   splitFrame: 10,
-  splitDis: 10,
+  splitDis: 20,
 
   sortLimit: 10,
 
