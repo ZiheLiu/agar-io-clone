@@ -8,6 +8,7 @@ $('#startButton').on('click', function () {
   config.player.username = $('#playerNameInput').val();
   console.log('user: [username]' + config.player.username + ' click start');
 
+  //自动发送connection事件
   socket = io();
   socket.on('connect', function () {
     $('#startMenuWrapper').hide();

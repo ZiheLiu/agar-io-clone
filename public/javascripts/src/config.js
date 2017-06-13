@@ -20,7 +20,7 @@ export default {
   BORDER_WIDTH: 5,
 
   FONT_STYLE: "20px Georgia",
-  FONT_COLOR: "black",
+  FONT_COLOR: "white",
 
   KEY_LEFT: 65,
   KEY_RIGHT: 68,
