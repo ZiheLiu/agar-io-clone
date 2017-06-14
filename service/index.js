@@ -7,8 +7,10 @@ let foods = [];
 let barriers = [];
 
 function buildServer(server) {
+  //建立socket.io
   let io = require('socket.io')(server);
 
+  //
   io.on('connection', function(socket){
     console.log('connection [socket.id]' + socket.id);
 

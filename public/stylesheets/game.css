@@ -35,7 +35,7 @@ html.body-game, html.body-game body{
   position: absolute;
   left: 0;
   top: 0;
-  width: 50px;
+  //  width: 50px;
 }
 .game-sort ul {
   padding: 0;
