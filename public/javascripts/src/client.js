@@ -4,6 +4,15 @@ import Canvas from './canvas'
 
 let socket = null;
 
+$('#game-chat-input').on('keyup', function (event) {
+  let key = event.which || event.keyCode;
+  console.log('test', key)
+  if(key === config.KEY_ENTER) {
+    console.log(key, $('#game-chat-input').val())
+    socket.emit('clientChat', config.player.username, $('#game-chat-input').val())
+  }
+})
+
 $('#startButton').on('click', function () {
   config.player.username = $('#playerNameInput').val();
   console.log('user: [username]' + config.player.username + ' click start');
@@ -54,6 +63,12 @@ $('#startButton').on('click', function () {
     window.cancelAnimFrame(config.animLoopHandle);
     config.animLoopHandle = null;
   });
+
+  socket.on('serverChat', function(username, msg) {
+    $('#game-chat-main').append($('<p></p>').text(`${username} >> ${msg}`))
+    let curDiv = document.getElementById('game-chat-main')
+    curDiv.scrollTop = curDiv.scrollHeight
+  })
 });
 
 function updatePlayerSortPanel(sortPlayers) {

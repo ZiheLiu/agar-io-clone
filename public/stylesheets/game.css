@@ -77,3 +77,28 @@ html.body-game, html.body-game body{
 .icon-lg {
   width: 120px;
 }
+
+.game-chat {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 200px;
+  width: 250px;
+}
+.game-chat #game-chat-main {
+  height: 88%;
+  border: 1px solid #BDC3C7;
+  background: #BDC3C7;
+  opacity: .4;
+  width: 100%;
+  overflow: auto;
+}
+.game-chat #game-chat-input {
+  height: 12%;
+  width: 100%;
+  padding-left: 2%;
+  border: none;
+}
+.game-chat #game-chat-input:focus {
+  border: none;
+}

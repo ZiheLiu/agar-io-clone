@@ -26,5 +26,7 @@ export default {
   KEY_RIGHT: 68,
   KEY_UP: 87,
   KEY_DOWN: 83,
-  KEY_SPACE: 32
+  KEY_SPACE: 32,
+
+  KEY_ENTER: 13
 };

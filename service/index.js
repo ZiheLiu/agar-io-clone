@@ -17,6 +17,8 @@ function buildServer(server) {
     socket.on('clientRequestLogin', function(username){
       console.log('clientRequestLogin: [username]' + username);
 
+      io.sockets.emit('serverChat', 'system', `${username} join`)
+
       let color  = utils.getRandomColor();
       let curPlayer = {
         username: username,
@@ -45,6 +47,10 @@ function buildServer(server) {
       players.push(curPlayer);
       playerToSockets[socket.id] = socket;
     });
+
+    socket.on('clientChat', function(username, msg){
+      io.sockets.emit('serverChat', username, msg)
+    })
 
     socket.on('clientWindowResize', function (x, y) {
       config.curWidth = x;
