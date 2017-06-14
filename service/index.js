@@ -4,6 +4,7 @@ const utils = require('./utils');
 let players = [];
 let playerToSockets = {};
 let foods = [];
+let barriers = [];
 
 function buildServer(server) {
   let io = require('socket.io')(server);
@@ -130,6 +131,18 @@ function gameLoop() {
     });
   }
 
+  //如果尖刺数目没有达到上线，增加尖刺
+  if(barriers.length < config.limitBarriers) {
+    let pos = utils.getRandomPosition(0, 0, config.maxWidth, config.maxHeight)
+    barriers.push({
+      x: pos.x,
+      y: pos.y,
+      quality: config.barrierQuality,
+      radius: utils.getRadiusByQuality(config.barrierQuality),
+      color: utils.getRandomColor()
+    })
+  }
+
   players.sort((player, player2) => {
     return player.quality < player2.quality
   })
@@ -178,6 +191,44 @@ function gameLoop() {
           ++ i;
       }
     });
+
+    // meet barrier
+    let blocksLen = player.blocks.length
+    for(let i = 0, block=player.blocks[0]; i < blocksLen; block = player.blocks[i], i++) {
+      barriers.forEach((barrier) => {
+        if (barrier.quality < block.quality &&
+          utils.get2PointDistance(barrier.x, barrier.y, block.x, block.y) <= block.radius - barrier.radius*config.eatRotate) {
+
+          setPlayerQuality(block, block.quality / 4);
+          block.isSpliting = true
+          block.splitData = {
+            isKeyPress: config.splitDirection[3],
+            leftFrame: config.barrierSplitFrame
+          }
+
+          for (let i = 0; i < 3; i++) {
+            let curBlock = {
+              color: player.color,
+              username: player.username,
+              x: block.x,
+              y: block.y
+            };
+            setPlayerQuality(curBlock, block.quality);
+
+            curBlock.isSpliting = true
+            curBlock.splitData = {
+              isKeyPress: config.splitDirection[i],
+              leftFrame: config.barrierSplitFrame
+            }
+
+            player.blocks.push(curBlock);
+          }
+
+          setPlayerVelocity(player);
+
+        }
+      })
+    }
 
     //eat other player
     player.blocks.forEach(function (block) {
@@ -254,7 +305,15 @@ function gameLoop() {
         food.y - food.radius <= player.y + config.curHeight/2);
     });
 
-    playerToSockets[player.socketId].emit('serverMove', player, seenBlocks, seenFoods, sortPlayers);
+    //calculate seen barrier
+    let seenBarriers = barriers.filter(function (barrier) {
+      return (barrier.x + barrier.radius >= player.x - config.curWidth/2 &&
+        barrier.x - barrier.radius <= player.x + config.curWidth/2) &&
+        (barrier.y + barrier.radius >= player.y - config.curHeight/2 &&
+        barrier.y - barrier.radius <= player.y + config.curHeight/2);
+    });
+
+    playerToSockets[player.socketId].emit('serverMove', player, seenBlocks, seenFoods, sortPlayers, seenBarriers);
   }
 }
 

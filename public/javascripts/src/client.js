@@ -19,7 +19,7 @@ $('#startButton').on('click', function () {
     initGame();
   });
 
-  socket.on('serverMove', function (curPlayer, seenBlocks, seenFoods, sortPlayers) {
+  socket.on('serverMove', function (curPlayer, seenBlocks, seenFoods, sortPlayers, seenBarriers) {
     updatePlayerSortPanel(sortPlayers)
     config.player.x = curPlayer.x;
     config.player.y = curPlayer.y;
@@ -32,6 +32,10 @@ $('#startButton').on('click', function () {
 
     for(let i = 0; i<seenFoods.length; i++) {
       drawFood(seenFoods[i]);
+    }
+
+    for(let i = 0; i<seenBarriers.length; i++) {
+      drawBarrier(seenBarriers[i]);
     }
 
     seenBlocks.forEach(function (block) {
@@ -126,6 +130,13 @@ function drawPlayer(player) {
 function drawFood(food) {
   let position = utils.getCanvasXY(food.x, food.y);
   Canvas.drawCircle(position.x, position.y, food.radius, food.color);
+}
+
+function drawBarrier(barrier) {
+  // let position = utils.getCanvasXY(barrier.x, barrier.y);
+  // Canvas.drawCircle(position.x, position.y, barrier.radius, barrier.color);
+  let position = utils.getCanvasXY(barrier.x, barrier.y);
+  Canvas.drawBarrier(position.x, position.y, barrier.radius, barrier.color)
 }
 
 function gameLoopFun() {

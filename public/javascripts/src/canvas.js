@@ -90,6 +90,38 @@ function drawPlayer(centerX, centerY, radius, minX, minY, maxX, maxY, color, use
   canvasContext.fillText(username, centerX, centerY);
 }
 
+function drawBarrier(centerX, centerY, radius, color) {
+  canvasContext.strokeStyle = color.border;
+  canvasContext.fillStyle = color.fill;
+  canvasContext.lineWidth = config.BORDER_WIDTH;
+
+  let pointSum = ~~(Math.PI*radius*2/5);
+  let arcStep = 2*Math.PI/pointSum;
+
+  canvasContext.beginPath();
+  let next_x = centerX + radius, next_y = centerY
+  let x, y;
+  canvasContext.moveTo(next_x, next_y);
+  for(let i=1;i<=pointSum;i++) {
+    x = next_x
+    y = next_y
+    next_x = centerX + radius*Math.cos(arcStep*i)
+    next_y = centerY + radius*Math.sin(arcStep*i)
+
+    if (arcStep * i < Math.PI / 2 || arcStep * i > Math.PI * 1.5) {
+      canvasContext.lineTo((next_x + x) /2, (next_y + y)/2 + 2)
+    }
+    else {
+      canvasContext.lineTo((next_x + x) /2, (next_y + y)/2 - 2)
+    }
+
+    canvasContext.lineTo(next_x, next_y)
+  }
+  canvasContext.fill();
+  canvasContext.stroke();
+}
+
+
 function drawGrid(startX, endX, startY, endY) {
   canvasContext.strokeStyle = config.gridColor;
   canvasContext.beginPath();
@@ -139,6 +171,7 @@ export default {
   drawLine: drawLine,
   drawPlayer: drawPlayer,
   setWidthHeight,
+  drawBarrier,
 
   isKeyPress: isKeyPress
 }

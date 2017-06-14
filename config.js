@@ -11,14 +11,19 @@ module.exports = {
   initGarvity: 5000,
   initBeishu: 30,
 
-  splitFrame: 10,
-  splitDis: 20,
+  splitFrame: 20,
+  splitDis: 10,
 
   sortLimit: 10,
 
   eatPlayerRotate: 1.25,
   eatPlayerRadiusRotate: 3/4,
 
+  limitBarriers: 100,
+  barrierQuality: 3000,
+  splitDirection: [[true, true, false, false], [true, false, false, true],
+    [false, false, true, true], [false, true, true, false]],
+  barrierSplitFrame: 10,
 
   foodQuality: 500,
   limitFoods: 500,
